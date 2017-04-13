@@ -1,5 +1,9 @@
 ---
 
+- apt_key:
+    keyserver: keys.gnupg.net
+    id: 3994D24FB8543576
+
 - name: collectd-install | Install ppa
   apt_repository: >
     repo={{ collectd_ppa_source }}
@@ -11,5 +15,7 @@
   when: not collectd_use_ppa_latest
 
 - name: collectd-install | Install latest collectd package
-  apt: name=collectd
+  apt:
+    name=collectd-core
+    state=latest
   when: collectd_use_ppa_latest

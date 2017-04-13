@@ -10,3 +10,15 @@
 - name: collectd-configure | Configure additional types
   template: src=types.db.j2 dest={{collectd_additional_types_db_path}}
   notify: collectd restart
+
+- name: collectd-configure | Get list of Ceph Daemons
+  shell: "ls -1 /var/run/ceph | sed 's/ceph-*//g' | sed 's/.asok//g'"
+  register: daemons
+
+- name: debug
+  debug: 
+    var: daemons.stdout.splitlines()
+
+- name: collectd-configure | Configure Ceph plugin
+  template: src=ceph.conf.j2 dest={{collectd_config_dir}}/ceph.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart  

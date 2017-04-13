@@ -1,0 +1,13 @@
+{% if collectd_ceph %}
+LoadPlugin ceph
+<Plugin ceph>
+  LongRunAvgLatency false
+  ConvertSpecialMetricTypes true
+{% for daemon in daemons.stdout.splitlines() %}
+    <Daemon "{{ daemon }}">
+      SocketPath "/var/run/ceph/ceph-{{ daemon }}.asok"
+    </Daemon>
+{% endfor %}
+</Plugin>
+{% endif %}
+
