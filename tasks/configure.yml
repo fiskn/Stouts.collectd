@@ -12,7 +12,7 @@
   notify: collectd restart
 
 - name: collectd-configure | Get list of Ceph Daemons
-  shell: "ls -1 /var/run/ceph | sed 's/ceph-....//' | sed 's/.asok//g'"
+  shell: "ls -1 /var/run/ceph | sed 's/ceph-//' | sed 's/.asok//g'"
   register: daemons
 
 - name: debug
